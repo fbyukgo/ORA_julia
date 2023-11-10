@@ -2,7 +2,12 @@
 
 julia_version = "1.9.3"
 manifest_format = "2.0"
-project_hash = "394674f2e1dbc0990c888c3ca4df111f6d9b2796"
+project_hash = "b87c25a71797ed30ae3090eab95cfc17e4c9237e"
+
+[[deps.BigCombinatorics]]
+git-tree-sha1 = "80199c8bc799b39bde638296c15cca461300d88e"
+uuid = "7b33fef7-ef1d-5d54-bb67-cf96d4c8a166"
+version = "0.3.5"
 
 [[deps.Dates]]
 deps = ["Printf"]
