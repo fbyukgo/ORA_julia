@@ -1,4 +1,5 @@
 using JSON
+include("hypergeometric.jl")
 
 #reading the pathway json file
 function read_json(file)
@@ -21,4 +22,3 @@ pathwayGenelist = Dict()
 for (key, val) in kegg_dict
     pathwayGenelist[key] = val["geneSymbols"]
 end
-
