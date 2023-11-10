@@ -10,7 +10,7 @@ end
 
 #load the dictionary from a json file 
 #https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp
-json_dict = read_json("kegg_medicus.json")
+json_dict = read_json("c2_cp.json")
 nPathways = length(keys(json_dict))
 pathwayDict = Dict()
 for (key, val) in json_dict
@@ -18,18 +18,24 @@ for (key, val) in json_dict
 end
 
 
-
+example_list = ["SNF7", "STP22",  "VPS28",  "SNF8", "VPS36", "VPS25", "YGR122W", "RIM20", "RIM21", "RIM8", "RIM101", "DFG16", "RIM9", "YGL046W", "RIM13","YNR029"]
+example_list = ["PDCD1", "HLA-DRB1", "HLA-DQB1", "TNFRSF1A"]
 backgroundGenes = []
-
 for (key, val) in pathwayDict
     for gene in val
         if !(gene in backgroundGenes)
-            push!(backgroundGenes, val)
+            push!(backgroundGenes, gene)
         end
     end    
 end
 
-example_list = pathwayDict["KEGG_MEDICUS_VARIANT_MUTATION_INACTIVATED_SIGMAR1_TO_CA2_APOPTOTIC_PATHWAY"]
+for gene in example_list
+    if !(gene in backgroundGenes)
+        push!(backgroundGenes, gene)
+    end
+end
+
+#example_list = pathwayDict["KEGG_MEDICUS_VARIANT_MUTATION_INACTIVATED_SIGMAR1_TO_CA2_APOPTOTIC_PATHWAY"]
 
 
 function run_ora(backgroundGenes, geneList, pathwayDict)
@@ -38,11 +44,13 @@ function run_ora(backgroundGenes, geneList, pathwayDict)
     alpha = 0.05
     numPathways = length(pathwayDict)
     pvalThr = alpha / numPathways 
-
+    
     lenList = length(geneList)
     lenBG = length(backgroundGenes)
+    
     for (key, val) in pathwayDict
         pathLength = length(val)
+        
         intersectGenes = intersect(geneList, val)
         interLen = length(intersect(geneList, val))
         pval = hypergeometric(interLen, lenBG, lenList, pathLength)
@@ -56,12 +64,14 @@ function run_ora(backgroundGenes, geneList, pathwayDict)
     return resultDict 
 end
 
+
+
+
 results = run_ora(backgroundGenes, example_list, pathwayDict )
 
-
-results["KEGG_MEDICUS_VARIANT_MUTATION_INACTIVATED_SIGMAR1_TO_CA2_APOPTOTIC_PATHWAY"]
 for (key, val) in results
-    println(key, val)
+    println(key)
+    println(val)
 end
 
 
